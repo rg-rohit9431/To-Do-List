@@ -1,11 +1,11 @@
-document.addEventListener('DOMContentLoaded', function () {
+// document.addEventListener('DOMContentLoaded', function () {
     var textCreate = document.getElementById('text-box');
     var submitButton = document.getElementById('submit');
     var createBox = document.getElementById('create-box');
 
     submitButton.addEventListener("click", function () {
         if (textCreate.value.trim() === "") {
-            showNotification("Enter some tasks!","#2880e5");
+            showNotification("Enter some tasks!", "#2880e5");
             return;
         }
 
@@ -27,39 +27,47 @@ document.addEventListener('DOMContentLoaded', function () {
         newBox.appendChild(icons);
         createBox.appendChild(newBox);
 
-        // Add click event for delete
-        icons.addEventListener("click", function () {
-            showNotification("Tasks Deleted...","#fd8c73");
-            createBox.removeChild(newBox);
-        });
-
         // Clear the input
         textCreate.value = "";
-        showNotification("Tasks Added...","#9be9a8"); //show notification
+        showNotification("Tasks Added...", "#9be9a8"); //show notification
+        saveData();
     });
 
-    // icons.addEventListener("click", function (event) {
-    //     if (event.target && event.target.className === "fas fa-times icon") {
-    //         var parentBox = event.target.parentNode;
-    //         createBox.removeChild(parentBox);
-    //         // showNotification("Task deleted!");
-    //     }
-    // });
+    createBox.addEventListener("click", function (event) {
+        if (event.target && event.target.className === "fas fa-times icon") {
+            var parentBox = event.target.parentNode;
+            createBox.removeChild(parentBox);
+            showNotification("Task deleted!");
+            saveData();
+        }
+    });
 
-    function showNotification(val,coloR) {
+
+    function showNotification(val, coloR) {
         var noticeBox = document.createElement("div");
-        noticeBox.className="notice";
+        noticeBox.className = "notice";
         noticeBox.innerHTML = val;
 
         document.getElementById("notification").appendChild(noticeBox);
 
-        noticeBox.style.transform="translate(0,0)";
-        noticeBox.style.backgroundColor=coloR;
+        noticeBox.style.transform = "translate(0,0)";
+        noticeBox.style.backgroundColor = coloR;
         setTimeout(function () {
-            noticeBox.style.transform="translate(150%,0)";
+            noticeBox.style.transform = "translate(150%,0)";
             document.getElementById("notification").removeChild(noticeBox);
         }, 4000);
         console.log(noticeBox.innerHTML);
 
     }
-});
+
+
+
+function saveData() {
+    localStorage.setItem("data", createBox.innerHTML);
+}
+
+function getData() {
+    createBox.innerHTML = localStorage.getItem("data");
+}
+
+getData();
