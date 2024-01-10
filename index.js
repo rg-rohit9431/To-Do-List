@@ -57,7 +57,6 @@
             document.getElementById("notification").removeChild(noticeBox);
         }, 4000);
         console.log(noticeBox.innerHTML);
-
     }
 
 
